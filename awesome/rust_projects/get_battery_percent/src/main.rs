@@ -8,7 +8,8 @@ fn read_battery_file(file: &str, strip_last_char: bool) -> String {
 
     let mut contents = String::new();
     let mut file = File::open(full_path).expect("Unable to open battery file");
-    file.read_to_string(&mut contents).expect("Unable to read file");
+    file.read_to_string(&mut contents)
+        .expect("Unable to read file");
 
     if strip_last_char {
         contents.pop();
@@ -36,16 +37,20 @@ fn main() {
             let remaining_energy = energy_full - energy_now;
             status_short = "C";
             (remaining_energy as f32) / (power_now as f32)
-        },
+        }
         "Discharging" => {
             let remaining_energy = energy_now;
             status_short = "D";
             (remaining_energy as f32) / (power_now as f32)
-        },
-        _ => panic!("Unknown battery status")
+        }
+        _ => panic!("Unknown battery status"),
     };
 
-    let time_remaining_split: Vec<String> = time_remaining.to_string().split(".").map(|a| String::from(a)).collect();
+    let time_remaining_split: Vec<String> = time_remaining
+        .to_string()
+        .split(".")
+        .map(|str_part| String::from(str_part))
+        .collect();
     let hours_part = &time_remaining_split[0];
     let frac_part = &time_remaining_split[1][0..1];
     let time_remaining = format!("{}.{}", hours_part, frac_part);

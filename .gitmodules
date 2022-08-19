@@ -1,0 +1,3 @@
+[submodule "awesome/rust_projects/awesome/rust_projects/get_battery_percent"]
+	path = awesome/rust_projects/awesome/rust_projects/get_battery_percent
+	url = git@github-tobeqz:tobeqz/get_battery_percent

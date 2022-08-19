@@ -1,0 +1,3 @@
+--for i,v in pairs(vim) do
+--    print(i)
+--end

@@ -11,5 +11,8 @@ return require('packer').startup(function(use)
   use 'ms-jpq/chadtree'
   use 'ms-jpq/coq_nvim'
   use 'ms-jpq/coq.artifacts'
+  use 'bling/vim-bufferline'
+  use 'junegunn/fzf'
+  use 'junegunn/fzf.vim'
 end)
 

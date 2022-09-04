@@ -22,3 +22,19 @@ nnoremap("<leader>f", "<cmd>CHADopen<CR>")
 
 -- LSP
 nnoremap("<leader>h", "<cmd>lua vim.lsp.buf.hover()<CR>")
+
+-- **Utility bindings**
+-- Close current buffer
+nnoremap("<leader>bc", "<cmd>bn<CR><cmd>bw#<CR>")
+
+-- Next buffer
+nnoremap("<S-L>", "<cmd>bn<CR>")
+
+-- Previous buffer
+nnoremap("<S-H>", "<cmd>bp<CR>")
+
+-- Open fzf for gitfiles
+nnoremap("<C-p>", "<cmd>GFiles<CR>")
+
+-- Open fzf for buffers
+nnoremap("<leader>p", "<cmd>Buffers<CR>")

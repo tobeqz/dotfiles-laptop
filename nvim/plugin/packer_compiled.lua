@@ -84,6 +84,16 @@ _G.packer_plugins = {
     path = "/home/main/.local/share/nvim/site/pack/packer/start/coq_nvim",
     url = "https://github.com/ms-jpq/coq_nvim"
   },
+  fzf = {
+    loaded = true,
+    path = "/home/main/.local/share/nvim/site/pack/packer/start/fzf",
+    url = "https://github.com/junegunn/fzf"
+  },
+  ["fzf.vim"] = {
+    loaded = true,
+    path = "/home/main/.local/share/nvim/site/pack/packer/start/fzf.vim",
+    url = "https://github.com/junegunn/fzf.vim"
+  },
   ["nord-vim"] = {
     loaded = true,
     path = "/home/main/.local/share/nvim/site/pack/packer/start/nord-vim",
@@ -108,6 +118,11 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/main/.local/share/nvim/site/pack/packer/start/vim-airline-themes",
     url = "https://github.com/vim-airline/vim-airline-themes"
+  },
+  ["vim-bufferline"] = {
+    loaded = true,
+    path = "/home/main/.local/share/nvim/site/pack/packer/start/vim-bufferline",
+    url = "https://github.com/bling/vim-bufferline"
   }
 }
 

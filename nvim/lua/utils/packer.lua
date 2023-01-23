@@ -4,6 +4,8 @@ vim.cmd [[packadd packer.nvim]]
 return require('packer').startup(function(use)
     -- Packer can manage itself
     use 'wbthomason/packer.nvim'
+    use 'embear/vim-localvimrc'
+    use 'Stoozy/vimcord'
     use 'arcticicestudio/nord-vim'
     use 'vim-airline/vim-airline'
     use 'vim-airline/vim-airline-themes'
@@ -17,6 +19,6 @@ return require('packer').startup(function(use)
     use 'glacambre/firenvim'
     use 'evanleck/vim-svelte'
     use 'folke/trouble.nvim'
-	use 'nvim-tree/nvim-web-devicons'
+	  use 'nvim-tree/nvim-web-devicons'
 end)
 

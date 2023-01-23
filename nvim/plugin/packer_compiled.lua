@@ -144,10 +144,20 @@ _G.packer_plugins = {
     path = "/home/main/.local/share/nvim/site/pack/packer/start/vim-bufferline",
     url = "https://github.com/bling/vim-bufferline"
   },
+  ["vim-localvimrc"] = {
+    loaded = true,
+    path = "/home/main/.local/share/nvim/site/pack/packer/start/vim-localvimrc",
+    url = "https://github.com/embear/vim-localvimrc"
+  },
   ["vim-svelte"] = {
     loaded = true,
     path = "/home/main/.local/share/nvim/site/pack/packer/start/vim-svelte",
     url = "https://github.com/evanleck/vim-svelte"
+  },
+  vimcord = {
+    loaded = true,
+    path = "/home/main/.local/share/nvim/site/pack/packer/start/vimcord",
+    url = "https://github.com/Stoozy/vimcord"
   }
 }
 

@@ -21,6 +21,31 @@ local hotkeys_popup = require("awful.hotkeys_popup")
 -- when client with a matching name is opened:
 require("awful.hotkeys_popup.keys")
 
+local swipe_event_path = "/home/main/.config/awesome/events/swipe_gesture"
+
+gears.timer.start_new(0.05, function()
+    -- Get file contents
+    local swipe_event_file = io.open(swipe_event_path, "r+")
+    local content = swipe_event_file:read("*all")
+    swipe_event_file:close()
+
+    --naughty.notification { message = content }
+    
+    if content ~= "" then
+        -- Switch tag
+        if content == "left\n" then
+            awful.tag.viewprev(awful.screen.focused())
+        elseif content == "right\n" then
+            awful.tag.viewnext(awful.screen.focused())
+        end 
+        -- Delete contents
+        io.open(swipe_event_path, "w"):close()
+    end
+
+
+    return true
+end)
+
 --naughty.notification {
 --	message = "lol"
 --}
@@ -543,3 +568,7 @@ end)
 
 awesome.spawn("setxkbmap us intl", false)
 awesome.spawn("pkill pipewire", false)
+awesome.spawn("nm-applet", false)
+awesome.spawn("syncthing", false)
+awesome.spawn("xsettingsd", false)
+awesome.spawn("touchegg", false)

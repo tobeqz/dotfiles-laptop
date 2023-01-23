@@ -25,7 +25,7 @@ nnoremap("<leader>h", "<cmd>lua vim.lsp.buf.hover()<CR>")
 
 -- **Utility bindings**
 -- Close current buffer
-nnoremap("<leader>bc", "<cmd>bn<CR><cmd>bw#<CR>")
+nnoremap("<leader>bc", "<cmd>bn<CR><cmd>bw!#<CR>")
 
 -- Next buffer
 nnoremap("<S-L>", "<cmd>bn<CR>")
@@ -38,3 +38,12 @@ nnoremap("<C-p>", "<cmd>GFiles<CR>")
 
 -- Open fzf for buffers
 nnoremap("<leader>p", "<cmd>Buffers<CR>")
+
+--- Run current python file
+nnoremap("<leader>ep", "<cmd>!python %<CR>")
+
+-- Run SQL query on utwente
+nnoremap("<leader>es", "<cmd>let res=system('psql -h bronto.ewi.utwente.nl -U dab_pcsdb22231a_67 -f '.expand('%'))<CR><cmd>enew<CR><cmd>put=res<CR>gg<CR>")
+
+-- Load current haskell file into ghci
+nnoremap("<leader>eh", "<cmd>let hsf = expand('%')<CR><cmd>:term<CR><cmd>put='ghci '.hsf<CR>i<CR>")

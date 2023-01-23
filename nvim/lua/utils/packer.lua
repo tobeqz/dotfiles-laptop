@@ -14,5 +14,9 @@ return require('packer').startup(function(use)
   use 'bling/vim-bufferline'
   use 'junegunn/fzf'
   use 'junegunn/fzf.vim'
+  use 'glacambre/firenvim'
+  use 'embear/vim-localvimrc'
+  use 'Stoozy/vimcord'
+  use 'evanleck/vim-svelte'
 end)
 

@@ -39,11 +39,11 @@ nnoremap("<C-p>", "<cmd>GFiles<CR>")
 -- Open fzf for buffers
 nnoremap("<leader>p", "<cmd>Buffers<CR>")
 
---- Run current python file
-nnoremap("<leader>ep", "<cmd>!python %<CR>")
+-- Open workspace diagnostics
+nnoremap("<leader>d", "<cmd>Trouble workspace_diagnostics<CR>")
 
--- Run SQL query on utwente
-nnoremap("<leader>es", "<cmd>let res=system('psql -h bronto.ewi.utwente.nl -U dab_pcsdb22231a_67 -f '.expand('%'))<CR><cmd>enew<CR><cmd>put=res<CR>gg<CR>")
+-- Open lsp references
+nnoremap("<leader>gr", "<cmd>Trouble lsp_references<CR>")
 
--- Load current haskell file into ghci
-nnoremap("<leader>eh", "<cmd>let hsf = expand('%')<CR><cmd>:term<CR><cmd>put='ghci '.hsf<CR>i<CR>")
+-- Open lsp definitions
+nnoremap("<leader>gd", "<cmd>Trouble lsp_definitions<CR>")

@@ -40,7 +40,7 @@ nnoremap("<C-p>", "<cmd>GFiles<CR>")
 nnoremap("<leader>p", "<cmd>Buffers<CR>")
 
 -- Open workspace diagnostics
-nnoremap("<leader>d", "<cmd>Trouble workspace_diagnostics<CR>")
+nnoremap("<leader>d", "<cmd>Trouble document_diagnostics<CR>")
 
 -- Open lsp references
 nnoremap("<leader>gr", "<cmd>Trouble lsp_references<CR>")

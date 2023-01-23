@@ -25,7 +25,7 @@ nnoremap("<leader>h", "<cmd>lua vim.lsp.buf.hover()<CR>")
 
 -- **Utility bindings**
 -- Close current buffer
-nnoremap("<leader>bc", "<cmd>bn<CR><cmd>bw#<CR>")
+nnoremap("<leader>bc", "<cmd>bn<CR><cmd>bw!#<CR>")
 
 -- Next buffer
 nnoremap("<S-L>", "<cmd>bn<CR>")
@@ -38,3 +38,12 @@ nnoremap("<C-p>", "<cmd>GFiles<CR>")
 
 -- Open fzf for buffers
 nnoremap("<leader>p", "<cmd>Buffers<CR>")
+
+-- Open workspace diagnostics
+nnoremap("<leader>d", "<cmd>Trouble workspace_diagnostics<CR>")
+
+-- Open lsp references
+nnoremap("<leader>gr", "<cmd>Trouble lsp_references<CR>")
+
+-- Open lsp definitions
+nnoremap("<leader>gd", "<cmd>Trouble lsp_definitions<CR>")

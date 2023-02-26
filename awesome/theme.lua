@@ -12,7 +12,8 @@ local themes_path = gfs.get_themes_dir()
 
 local theme = {}
 
-theme.font          = "monospace 11"
+theme.font          = "monospace 12"
+theme.icon_font     = "monospace 20"
 
 theme.bg_normal     = "#2E3440"
 theme.bg_focus      = "#4C566A"
@@ -25,11 +26,13 @@ theme.fg_focus      = "#ffffff"
 theme.fg_urgent     = "#ffffff"
 theme.fg_minimize   = "#ffffff"
 
-theme.useless_gap         = dpi(6)
+theme.useless_gap         = dpi(8)
 theme.border_width        = dpi(3)
 theme.border_color_normal = theme.bg_normal
 theme.border_color_active = "#88C0D0"
 theme.border_color_marked = "#91231c"
+
+theme.outline_color = "#ECEFF4"
 
 -- There are other variable sets
 -- overriding the default one when
@@ -97,7 +100,7 @@ theme.titlebar_maximized_button_focus_inactive  = themes_path.."default/titlebar
 theme.titlebar_maximized_button_normal_active = themes_path.."default/titlebar/maximized_normal_active.png"
 theme.titlebar_maximized_button_focus_active  = themes_path.."default/titlebar/maximized_focus_active.png"
 
-theme.wallpaper = "/home/main/.config/awesome/wp.jpg"
+theme.wallpaper = "/home/main/.config/awesome/images/wp.png"
 
 -- You can use your own layout icons like this:
 theme.layout_fairh = themes_path.."default/layouts/fairhw.png"

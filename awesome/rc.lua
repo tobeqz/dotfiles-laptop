@@ -104,19 +104,20 @@ end)
 screen.connect_signal("request::wallpaper", function(s)
     awful.wallpaper {
         screen = s,
-        widget = {
-            {
-                image     = beautiful.wallpaper,
-                upscale   = true,
-                downscale = true,
-                resize    = true,
-                widget    = wibox.widget.imagebox,
-            },
-            valign = "center",
-            halign = "center",
-            tiled  = false,
-            widget = wibox.container.tile,
-        }
+        bg = "#22272F",
+        --widget = {
+        --    {
+        --        image     = beautiful.wallpaper,
+        --        upscale   = true,
+        --        downscale = true,
+        --        resize    = true,
+        --        widget    = wibox.widget.imagebox,
+        --    },
+        --    valign = "center",
+        --    halign = "center",
+        --    tiled  = false,
+        --    widget = wibox.container.tile,
+        --}
     }
 end)
 -- }}}
@@ -127,23 +128,155 @@ end)
 -- mykeyboardlayout = awful.widget.keyboardlayout()
 
 -- Create a textclock widget
-mytextclock = wibox.widget.textclock()
+mytextclock = wibox.widget.textclock(" <b>%H:%M</b>")
+
+function parse_battery_info(out)
+    --return {
+    --    percentage = 10,
+    --    charge_state = "Discharging",
+    --    time_estimate = "3"
+    --}
+
+    local inputs = {}
+
+    for v in string.gmatch(out, "%S+") do
+        table.insert(inputs, v)
+    end
+
+    return {
+        percentage = tonumber(inputs[1]),
+        charge_state = inputs[2],
+        time_estimate = inputs[3]
+    }
+end
+
+function get_percentage_icon(percentage)
+    local icons = {
+        "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"
+    }
+
+    if percentage == 100 then
+        return icons[10]
+    end
+
+    return icons[(math.floor(percentage / 10) + 1)]
+    --return icons[1]
+end
 
 local battery_path = "/home/main/.config/awesome/rust_projects/get_battery_percent/target/release/get_battery_percent";
-mybatterywatch = awful.widget.watch(battery_path, 3);
+local battery_percent_watch = wibox.widget {
+    layout = wibox.layout.fixed.horizontal
+}
+
+gears.timer {
+    timeout = 1,
+    call_now = true,
+    autostart = true,
+    callback = function()
+        awful.spawn.easy_async(battery_path, function(stdout)
+            local status,err = pcall(function()
+            local battery = parse_battery_info(stdout)
+            local icon;
+            
+            local icon; 
+            if battery.charge_state == "Charging" then
+                icon = "󰂄"
+            else
+                icon = get_percentage_icon(battery.percentage)
+            end
+
+            battery_percent_watch.children = {
+                {
+                    widget = wibox.widget.textbox,
+                    text = icon,
+                    font = theme.icon_font 
+                },
+                wibox.widget.textbox(" <b>" .. battery.percentage .. "%</b>")
+            }
+            end)
+
+            if not status then
+                naughty.notification { message = err }
+
+            end
+        end)
+    end
+}
+--local battery_percent_watch = awful.widget.watch(battery_path, 3, function(widget, stdout)
+--    local status, err = pcall(function()
+--        local battery = parse_battery_info(widget, stdout)
+--        local icon; 
+--        if battery.charge_state == "Charging" then
+--            icon = "󰂄"
+--        else 
+--            icon = get_percentage_icon(widget, battery.percentage)
+--        end
+--        
+--        widget:set_markup(icon .. " <b>" .. battery.percentage .. "</b>%")
+--    end)
+--
+--    if not status then
+--        widget:set_text(err)
+--    end
+--end);
 
 
 screen.connect_signal("request::desktop_decoration", function(s)
     -- Each screen has its own tag table.
-    awful.tag({ "1", "2", "3", "4", "5", "6", "7", "8", "9" }, s, awful.layout.layouts[1])
+    awful.tag({ "1", "2", "3", "4", "5", "6", "7" }, s, awful.layout.layouts[1])
 
     -- Create a promptbox for each screen
     s.mypromptbox = awful.widget.prompt()
+
+    s.tag_outline = wibox.widget {
+        widget = wibox.widget.imagebox,
+        image = "/home/main/dotfiles/awesome/images/Outline.svg",
+        resize = true
+    }
+
+    s.tag_center = wibox.widget {
+        widget = wibox.container.margin,
+        margins = 6,
+        {
+            widget = wibox.widget.imagebox,
+            image = "/home/main/dotfiles/awesome/images/Center.svg",
+            resize = true,
+        }
+    }
+
+    s.tag_strikethrough = wibox.widget {
+        widget = wibox.widget.imagebox,
+        image = "/home/main/dotfiles/awesome/images/Strikethrough.svg",
+        resize = true
+    }
 
     -- Create a taglist widget
     s.mytaglist = awful.widget.taglist {
         screen  = s,
         filter  = awful.widget.taglist.filter.all,
+        style = {
+            spacing = 4
+        },
+        widget_template = {
+            layout = wibox.layout.stack,
+
+            update_callback = function(self, t)
+                local children = {s.tag_outline}
+
+                if t.selected then
+                    table.insert(children, s.tag_center)
+                end
+
+                if #t:clients() == 0 then
+                    table.insert(children, s.tag_strikethrough)
+                end
+
+                self.children = children
+                
+            end,
+            create_callback = function(self, t) self.update_callback(self, t) end,
+            s.tag_outline
+        },
         buttons = {
             awful.button({ }, 1, function(t) t:view_only() end),
             awful.button({ modkey }, 1, function(t)
@@ -176,38 +309,113 @@ screen.connect_signal("request::desktop_decoration", function(s)
         }
     }
 
+    s.epicclock = wibox.widget {
+        
+    }
+
+    function menu_container(w, dark)
+        return {
+            widget = wibox.container.background,
+            bg = dark and theme.bg_normal or theme.outline_color,
+            fg = dark and theme.fg_normal or theme.bg_normal,
+            border_color = dark and theme.outline_color or nil,
+            border_width = dark and theme.border_width or nil,
+            border_strategy = "inner",
+            --border_width = dark and 3 or theme.border_width,
+            shape = function(cr, width, height)
+                gears.shape.rounded_rect(cr, width, height, height/2)
+            end,
+
+            {
+                widget = wibox.container.margin,
+                top = theme.border_width,
+                bottom = theme.border_width,
+                top = 4,
+                bottom = 4,
+                left = 15,
+                right = 15,
+                w
+            }
+        }
+    end
+
     -- Create the wibox
-    s.mywibox = awful.wibar {
+    s.mywibar = awful.wibar {
+        bg = gears.color.transparent,
+        --bg = "#2E3440",
         position = "top",
+        shape = function(cr, width, height)
+            gears.shape.rounded_rect(cr, width, height, 8)
+        end,
+        height = 35,
         margins = {
-            top = theme.useless_gap,
-            bottom = -theme.useless_gap,
+            top = theme.useless_gap*2,
+            bottom = 0,
             left = theme.useless_gap*2,
             right = theme.useless_gap*2
         },
         screen   = s,
         widget   = {
-            layout = wibox.layout.align.horizontal,
-            { -- Left widgets
-                layout = wibox.layout.fixed.horizontal,
-                mylauncher,
-                s.mytaglist,
-                s.mypromptbox,
-                wibox.widget.textbox(" ")
+            layout = wibox.layout.ratio.horizontal,
+            spacing = 0,
+            
+            -- Left section of menu
+            {
+                widget = wibox.layout.fixed.horizontal,
+                menu_container {
+                    widget = wibox.container.margin,
+                    top = 2.5,
+                    bottom = 2.5,
+                    s.mytaglist
+                }
             },
-            s.mytasklist, -- Middle widget
-            { -- Right widgets
-                layout = wibox.layout.fixed.horizontal,
-                wibox.widget.textbox(" "),
-                mybatterywatch,
-                wibox.widget.textbox(" | "),
-                wibox.widget.systray(),
-                wibox.widget.textbox(" |"),
-                mytextclock,
-                s.mylayoutbox,
+
+            -- Middle section of menu
+            {
+                widget = wibox.container.place,
+                valign = center,
+                halign = center,
+                {
+                    layout = wibox.layout.fixed.horizontal,
+                    spacing = 10,
+                    menu_container({
+                        layout = wibox.layout.fixed.horizontal,
+                        {
+                            widget = wibox.widget.textbox,
+                            font = theme.icon_font,
+                            text = ""
+                        },
+                        mytextclock
+                    }),
+                    menu_container(battery_percent_watch)
+                }
             },
+
+            {
+                layout = wibox.layout.align.horizontal,
+                wibox.widget {},
+                wibox.widget {},
+                { -- Right section of menu
+                    layout = wibox.layout.fixed.horizontal,
+                    spacing = 10,
+                    menu_container {
+                        widget = wibox.layout.fixed.horizontal,
+                        {
+                            widget = wibox.widget.textbox,
+                            font = theme.icon_font,
+                            text = "󰃭"
+                        },
+                        wibox.widget.textclock(" %a %b %d")
+                    },
+                    menu_container(wibox.widget.systray(), true)
+                }
+            }
         }
     }
+
+    s.mywibar.widget:adjust_widget_ratio(1, 1, (1/3), 1)
+    s.mywibar.widget:adjust_widget_ratio(2, 1, (1/3), 1)
+    s.mywibar.widget:adjust_widget_ratio(3, 1, (1/3), 1)
 end)
 
 -- }}}
@@ -460,7 +668,10 @@ ruled.client.connect_signal("request::rules", function()
             focus     = awful.client.focus.filter,
             raise     = true,
             screen    = awful.screen.preferred,
-            placement = awful.placement.no_overlap+awful.placement.no_offscreen
+            placement = awful.placement.no_overlap+awful.placement.no_offscreen,
+            shape     = function(cr, width, height)
+                gears.shape.rounded_rect(cr, width, height, 8)
+            end
         }
     }
 

@@ -488,15 +488,15 @@ awful.keyboard.append_global_keybindings({
               {description = "focus the next screen", group = "screen"}),
     awful.key({ modkey, "Control" }, "k", function () awful.screen.focus_relative(-1) end,
               {description = "focus the previous screen", group = "screen"}),
-    awful.key({ modkey, "Control" }, "n",
-              function ()
-                  local c = awful.client.restore()
-                  -- Focus restored client
-                  if c then
-                    c:activate { raise = true, context = "key.unminimize" }
-                  end
-              end,
-              {description = "restore minimized", group = "client"}),
+    --awful.key({ modkey, "Control" }, "n",
+    --          function ()
+    --              local c = awful.client.restore()
+    --              -- Focus restored client
+    --              if c then
+    --                c:activate { raise = true, context = "key.unminimize" }
+    --              end
+    --          end,
+    --          {description = "restore minimized", group = "client"}),
 })
 
 -- Layout related keybindings
@@ -783,3 +783,4 @@ awesome.spawn("nm-applet", false)
 awesome.spawn("syncthing", false)
 awesome.spawn("xsettingsd", false)
 awesome.spawn("touchegg", false)
+awesome.spawn("xmousepasteblock", false)

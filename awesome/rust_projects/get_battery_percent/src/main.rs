@@ -35,15 +35,19 @@ fn main() {
     let time_remaining = match status.as_str() {
         "Charging" => {
             let remaining_energy = energy_full - energy_now;
-            status_short = "C";
+            status_short = "Charging";
             (remaining_energy as f32) / (power_now as f32)
         }
         "Discharging" => {
             let remaining_energy = energy_now;
-            status_short = "D";
+            status_short = "Discharging";
             (remaining_energy as f32) / (power_now as f32)
+        },
+        "Not charging" => {
+            status_short = "NotCharging";
+            0.0
         }
-        _ => panic!("Unknown battery status"),
+        _ => panic!("Unknown battery status: {}", status),
     };
 
     let time_remaining_split: Vec<String> = time_remaining
@@ -52,8 +56,11 @@ fn main() {
         .map(|str_part| String::from(str_part))
         .collect();
     let hours_part = &time_remaining_split[0];
-    let frac_part = &time_remaining_split[1][0..1];
+    let frac_part = match time_remaining_split.get(1) {
+        Some(s) => &s[0..1],
+        None => "0"
+    };
     let time_remaining = format!("{}.{}", hours_part, frac_part);
 
-    println!("{}% {} {}h", percentage, status_short, time_remaining);
+    println!("{} {} {}", percentage, status_short, time_remaining);
 }

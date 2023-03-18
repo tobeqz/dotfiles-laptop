@@ -19,6 +19,7 @@ return require('packer').startup(function(use)
     use 'glacambre/firenvim'
     use 'evanleck/vim-svelte'
     use 'folke/trouble.nvim'
-	  use 'nvim-tree/nvim-web-devicons'
+	use 'nvim-tree/nvim-web-devicons'
+    use 'weilbith/nvim-code-action-menu'
 end)
 
